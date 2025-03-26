@@ -1,0 +1,38 @@
+version: '3'
+services:
+  backend:
+    build:
+      context: ./server
+    ports:
+      - "5000:5000"
+    networks:
+      - can-network
+    depends_on:
+      - mongo
+    restart: always
+
+  frontend:
+    build:
+      context: ./client
+    ports:
+      - "8000:80"
+    networks:
+      - can-network
+    restart: always
+
+  mongo:
+    image: mongo
+    ports:
+      - "27017:27017"
+    networks:
+      - can-network
+    volumes:
+      - mongo-data:/data/db
+    restart: always
+
+networks:
+  can-network:
+    driver: bridge
+
+volumes:
+  mongo-data:
